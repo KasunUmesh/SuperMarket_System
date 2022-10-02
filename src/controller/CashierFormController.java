@@ -266,7 +266,7 @@ public class CashierFormController {
 
 
     public void tbBackButton(Event event) throws IOException {
-        Parent parent = FXMLLoader.load(getClass().getResource("../views/DashBoardForm.fxml"));
+        Parent parent = FXMLLoader.load(getClass().getResource("../views/LoginForm.fxml"));
         Scene scene = new Scene(parent);
 
         Stage primaryStage = (Stage) this.cashier.getScene().getWindow();

@@ -15,12 +15,13 @@ public class AppInitializer extends Application {
 
     @Override
     public void start(Stage primaryStage) throws IOException {
-        Parent parent = FXMLLoader.load(getClass().getResource("views/DashBoardForm.fxml"));
+        Parent parent = FXMLLoader.load(getClass().getResource("views/LoginForm.fxml"));
         Scene scene = new Scene(parent);
 
         primaryStage.setScene(scene);
         primaryStage.setTitle("Business");
         primaryStage.centerOnScreen();
+        primaryStage.setResizable(false);
         primaryStage.show();
 
     }
