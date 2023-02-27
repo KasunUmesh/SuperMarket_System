@@ -18,7 +18,7 @@ public class OrderDAOImpl implements OrderDAO {
     @Override
     public String getOrderId() throws SQLException, ClassNotFoundException {
 
-        ResultSet rst = CrudUtil.executeQuery("SELECT orderId FROM `Order` ORDER BY orderId DESC LIMIT 1");
+        /*ResultSet rst = CrudUtil.executeQuery("SELECT orderId FROM `Order` ORDER BY orderId DESC LIMIT 1");
 
         if (rst.next()){
 
@@ -35,12 +35,14 @@ public class OrderDAOImpl implements OrderDAO {
 
         }else {
             return "O-001";
-        }
+        }*/
+
+        return null;
     }
 
     @Override
     public boolean placeOrder(OrderDTO orderDTO){
-        try {
+       /* try {
 
             boolean addOrder = CrudUtil.executeUpdate("INSERT INTO `Order` VALUE (?,?,?,?)",
 
@@ -63,14 +65,16 @@ public class OrderDAOImpl implements OrderDAO {
             e.printStackTrace();
         }
 
-        return false;
+        return false;*/
+
+        return true;
 
     }
 
 
     @Override
     public boolean saveOrderDetail(String orderId, ArrayList<OrderDetailsDTO> items) throws SQLException, ClassNotFoundException {
-        for (OrderDetailsDTO temp: items
+       /* for (OrderDetailsDTO temp: items
              ) {
 
             boolean orderDetail = CrudUtil.executeUpdate("INSERT INTO `Order Detail` VALUES(?,?,?,?)",
@@ -95,20 +99,24 @@ public class OrderDAOImpl implements OrderDAO {
 
 
         }
+        return true;*/
+
         return true;
     }
 
     @Override
     public boolean updateQty(String itemCode, int qty) throws SQLException, ClassNotFoundException {
 
-        return CrudUtil.executeUpdate("UPDATE Item SET qtyOnHand=(qtyOnHand-" + qty + ") WHERE itemCode='" + itemCode + "'");
+//        return CrudUtil.executeUpdate("UPDATE Item SET qtyOnHand=(qtyOnHand-" + qty + ") WHERE itemCode='" + itemCode + "'");
+
+        return true;
 
     }
 
     @Override
     public ObservableList<OrderDetailTM> getAllOrderDetail(String orderId) throws SQLException, ClassNotFoundException {
 
-        ResultSet resultSet = CrudUtil.executeQuery(
+        /*ResultSet resultSet = CrudUtil.executeQuery(
                 "SELECT i.itemCode, i.orderQty, i.dPrice, o.cost FROM `order detail` i JOIN `order` o ON o.orderId=i.orderId WHERE i.orderId = '" + orderId + "'");
 
         ObservableList<OrderDetailTM> orderDetail = FXCollections.observableArrayList();
@@ -120,14 +128,16 @@ public class OrderDAOImpl implements OrderDAO {
                     resultSet.getDouble(4)
             ));
         }
-        return orderDetail;
+        return orderDetail;*/
+
+        return null;
 
     }
 
     @Override
     public ArrayList<OrderTM> getAllOrders() throws SQLException, ClassNotFoundException {
 
-        ArrayList<OrderTM> order = new ArrayList<>();
+        /*ArrayList<OrderTM> order = new ArrayList<>();
         ResultSet rst = CrudUtil.executeQuery("SELECT * FROM `Order`");
 
         while (rst.next()){
@@ -138,6 +148,8 @@ public class OrderDAOImpl implements OrderDAO {
 
             ));
         }
-        return order;
+        return order;*/
+
+        return null;
     }
 }

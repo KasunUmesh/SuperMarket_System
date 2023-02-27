@@ -4,6 +4,9 @@ import dao.CrudUtil;
 import dao.custom.CustomerDAO;
 import dto.CustomerDTO;
 import entity.Customer;
+import org.hibernate.Session;
+import org.hibernate.Transaction;
+import util.FactoryConfiguration;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -11,49 +14,42 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class CustomerDAOImpl implements CustomerDAO {
-
     @Override
     public boolean add(Customer c) throws SQLException, ClassNotFoundException {
 
-        return CrudUtil.executeUpdate("INSERT INTO Customer VALUES (?,?,?,?,?,?,?)",
+        Session session = FactoryConfiguration.getInstance().getSession();
+        Transaction transaction = session.beginTransaction();
 
-                c.getId(),
-                c.getTitle(),
-                c.getName(),
-                c.getAddress(),
-                c.getCity(),
-                c.getProvince(),
-                c.getPostalCode()
+        session.save(c);
 
-        );
+        transaction.commit();
+        session.close();
+        return true;
     }
 
     @Override
     public boolean delete(String id) throws SQLException, ClassNotFoundException {
 
-        return CrudUtil.executeUpdate("DELETE FROM Customer WHERE id=?", id);
+//        return CrudUtil.executeUpdate("DELETE FROM Customer WHERE id=?", id);
+        return true;
     }
 
     @Override
     public boolean update(Customer c) throws SQLException, ClassNotFoundException {
 
-        return CrudUtil.executeUpdate("UPDATE Customer SET title=?, name=?, address=?, city=?, province=?, postalCode=? WHERE id=?",
+        Session session = FactoryConfiguration.getInstance().getSession();
+        Transaction transaction = session.beginTransaction();
 
-                c.getTitle(),
-                c.getName(),
-                c.getAddress(),
-                c.getCity(),
-                c.getProvince(),
-                c.getPostalCode(),
-                c.getId()
+        session.update(c);
 
-        );
+        transaction.commit();
+        return true;
     }
 
     @Override
     public Customer search(String id) throws SQLException, ClassNotFoundException {
 
-        ResultSet rst = CrudUtil.executeQuery("SELECT * FROM Customer WHERE id=?", id);
+        /*ResultSet rst = CrudUtil.executeQuery("SELECT * FROM Customer WHERE id=?", id);
 
         if (rst.next()){
             return new Customer(
@@ -67,13 +63,15 @@ public class CustomerDAOImpl implements CustomerDAO {
             );
         }else {
             return null;
-        }
+        }*/
+
+        return null;
     }
 
     @Override
     public ArrayList<Customer> getAll() throws SQLException, ClassNotFoundException {
 
-        ArrayList<Customer> customers = new ArrayList<>();
+        /*ArrayList<Customer> customers = new ArrayList<>();
 
         ResultSet rst = CrudUtil.executeQuery("SELECT * FROM Customer");
 
@@ -88,7 +86,9 @@ public class CustomerDAOImpl implements CustomerDAO {
                     rst.getString(7)
             ));
         }
-        return customers;
+        return customers;*/
+
+        return null;
     }
 
 
@@ -96,14 +96,16 @@ public class CustomerDAOImpl implements CustomerDAO {
     @Override
     public List<String> getCustomerIds() throws SQLException, ClassNotFoundException {
 
-        List<String> ids = new ArrayList<>();
+       /* List<String> ids = new ArrayList<>();
 
         ResultSet rst = CrudUtil.executeQuery("SELECT * FROM Customer");
 
         while (rst.next()){
             ids.add(rst.getString(1));
         }
-        return ids;
+        return ids;*/
+
+        return null;
     }
 
     @Override
