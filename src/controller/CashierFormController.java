@@ -102,8 +102,8 @@ public class CashierFormController {
 
     private OrderDAO order = new OrderDAOImpl();
 
-    private CustomerBO customerBO =
-    private ItemBO item = new ItemBOImpl();
+    private CustomerBO customerBO = (CustomerBO) BoFactory.getBoFactory().getBo(BoFactory.BoTypes.CUSTOMER);
+    private ItemBO itemBO = (ItemBO) BoFactory.getBoFactory().getBo(BoFactory.BoTypes.ITEM);
 
 
     public void initialize(){
@@ -137,9 +137,9 @@ public class CashierFormController {
             colOrderDate.setCellValueFactory(new PropertyValueFactory<>("date"));
 
             loadAllOrder(order.getAllOrders());
-            setCustomerToTable(customer.getAllCustomer());
+            setCustomerToTable(customerBO.getAllCustomer());
             loadCustomerIds();
-            loadItemCodes();
+//            loadItemCodes();
             setOrderId();
 
             tblCustomerDetails.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
@@ -215,7 +215,7 @@ public class CashierFormController {
 
     private void setItemData(String itemId) throws SQLException, ClassNotFoundException {
 
-        ItemDTO i1 = item.searchItem(itemId);
+        ItemDTO i1 = itemBO.searchItem(itemId);
         if (i1 == null) {
 
             new Alert(Alert.AlertType.WARNING, "Empty Result Set");
@@ -230,7 +230,7 @@ public class CashierFormController {
     }
 
     private void setCustomerData(String customerId) throws SQLException, ClassNotFoundException {
-        CustomerDTO c1 = customer.searchCustomer(customerId);
+        /*CustomerDTO c1 = customerBO.searchCustomer(customerId);
         if (c1 == null) {
 
             new Alert(Alert.AlertType.WARNING, "Empty Result Set");
@@ -240,19 +240,19 @@ public class CashierFormController {
             txtOrderCustAddress.setText(c1.getAddress());
             txtOrderCustCity.setText(c1.getCity());
 
-        }
+        }*/
 
     }
 
     private void loadItemCodes() throws SQLException, ClassNotFoundException {
 
-        List<String> allItemCodes = item.getAllItemCodes();
+        List<String> allItemCodes = itemBO.getAllItemCodes();
         cmbItemCode.getItems().addAll(allItemCodes);
     }
 
     private void loadCustomerIds() throws SQLException, ClassNotFoundException {
 
-        List<String> customerIds = customer.getCustomerIds();
+        List<String> customerIds = customerBO.getCustomerIds();
         cmbCustomerID.getItems().addAll(customerIds);
 
     }
@@ -277,19 +277,22 @@ public class CashierFormController {
 
     }
 
-    public void btnAddCustomerOnAction(ActionEvent actionEvent) throws SQLException, ClassNotFoundException {
-        CustomerDTO c1 = new CustomerDTO(
-                txtcID.getText(),
-                txtcTitle.getText(),
-                txtcName.getText(),
-                txtcAddress.getText(),
-                txtCity.getText(),
-                txtcdProvince.getText(),
-                txtcdPostalCode.getText()
-        );
-        if (customer.addCustomer(c1)) {
+    public void btnAddCustomerOnAction(ActionEvent actionEvent) {
+
+
+        try {
+
+            CustomerDTO c1 = new CustomerDTO(
+                    txtcID.getText(),
+                    txtcTitle.getText(),
+                    txtcName.getText(),
+                    txtcAddress.getText(),
+                    txtCity.getText(),
+                    txtcdProvince.getText(),
+                    txtcdPostalCode.getText()
+            );
+            customerBO.addCustomer(c1);
             new Alert(Alert.AlertType.CONFIRMATION, "Saved..").show();
-
             txtcID.clear();
             txtcTitle.clear();
             txtcName.clear();
@@ -299,11 +302,10 @@ public class CashierFormController {
             txtcdPostalCode.clear();
             txtcID.requestFocus();
 
-            setCustomerToTable(customer.getAllCustomer());
-
-        } else {
-            new Alert(Alert.AlertType.WARNING, "Try Again..").show();
-
+            setCustomerToTable(customerBO.getAllCustomer());
+           
+        } catch (SQLException e) {
+            new Alert(Alert.AlertType.ERROR, "Failed to Save the Customer" + e.getMessage()).show();
             txtcID.clear();
             txtcTitle.clear();
             txtcName.clear();
@@ -312,8 +314,10 @@ public class CashierFormController {
             txtcdProvince.clear();
             txtcdPostalCode.clear();
             txtcID.requestFocus();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
         }
-        
+
     }
 
     private void loadDateAndTime() {
@@ -335,14 +339,14 @@ public class CashierFormController {
 
     public void btnSearchOnAction(ActionEvent actionEvent) throws SQLException, ClassNotFoundException {
 
-        String customerId = txtcID.getText();
+       /* String customerId = txtcID.getText();
 
-        CustomerDTO c1 = customer.searchCustomer(customerId);
+        CustomerDTO c1 = customerBO.searchCustomer(customerId);
         if (c1==null){
             new Alert(Alert.AlertType.WARNING, "Empty Result Set").show();
         }else {
             setData(c1);
-        }
+        }*/
 
     }
 
@@ -359,9 +363,9 @@ public class CashierFormController {
         );
 
 
-        if ( customer.updateCustomer(c1)){
+        if ( customerBO.updateCustomer(c1)){
             new Alert(Alert.AlertType.CONFIRMATION,"Updated..").show();
-            setCustomerToTable(customer.getAllCustomer());
+            setCustomerToTable(customerBO.getAllCustomer());
 
             txtcID.clear();
             txtcTitle.clear();
@@ -378,10 +382,10 @@ public class CashierFormController {
 
     public void btnDeleteOnAction(ActionEvent actionEvent) throws SQLException, ClassNotFoundException {
         if (selectedCustomer!=null){
-            if (customer.deleteCustomer(selectedCustomer.getId())){
+            if (customerBO.deleteCustomer(selectedCustomer.getId())){
                 new Alert(Alert.AlertType.CONFIRMATION, "Deleted").show();
 
-                setCustomerToTable(customer.getAllCustomer());
+                setCustomerToTable(customerBO.getAllCustomer());
 
                 txtcID.clear();
                 txtcTitle.clear();

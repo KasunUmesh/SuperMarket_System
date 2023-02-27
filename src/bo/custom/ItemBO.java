@@ -1,12 +1,13 @@
 package bo.custom;
 
+import bo.SuperBO;
 import dto.ItemDTO;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-public interface ItemBO {
+public interface ItemBO extends SuperBO {
     
     ItemDTO searchItem(String itemId) throws SQLException, ClassNotFoundException;
 
