@@ -1,5 +1,6 @@
 package controller;
 
+import bo.BoFactory;
 import bo.custom.ItemBO;
 import bo.custom.impl.ItemBOImpl;
 import javafx.collections.FXCollections;
@@ -41,7 +42,7 @@ public class AdminFormController {
 
     ItemTM selectedItem = null;
 
-    private ItemBO item = new ItemBOImpl();
+    private final ItemBO itemBO = (ItemBO) BoFactory.getBoFactory().getBo(BoFactory.BoTypes.ITEM);
 
     public void initialize(){
 
@@ -53,7 +54,7 @@ public class AdminFormController {
             colUnitPrice.setCellValueFactory(new PropertyValueFactory<>("unitPrice"));
             colQTY.setCellValueFactory(new PropertyValueFactory<>("qtyOnHand"));
 
-            setItemToTable(item.getAllItem());
+            setItemToTable(itemBO.getAllItem());
 
             tblItemDetails.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
                 if (newValue != null){
@@ -93,7 +94,7 @@ public class AdminFormController {
                 Double.parseDouble(txtUnitPrice.getText()),
                 Integer.parseInt(txtQTY.getText())
         );
-        if(item.addItem(i1)){
+        if(itemBO.addItem(i1)){
             new Alert(Alert.AlertType.CONFIRMATION,"Saved..").show();
 
             txtItemCode.clear();
@@ -103,7 +104,7 @@ public class AdminFormController {
             txtQTY.clear();
             txtItemCode.requestFocus();
 
-            setItemToTable(item.getAllItem());
+            setItemToTable(itemBO.getAllItem());
 
         }else {
             new Alert(Alert.AlertType.WARNING, "Try Again..").show();
@@ -127,10 +128,10 @@ public class AdminFormController {
                 Integer.parseInt(txtQTY.getText())
         );
 
-        if (item.updateItem(i1)){
+        if (itemBO.updateItem(i1)){
 
             new Alert(Alert.AlertType.CONFIRMATION,"Updated..").show();
-            setItemToTable(item.getAllItem());
+            setItemToTable(itemBO.getAllItem());
 
             txtItemCode.clear();
             txtDescription.clear();
@@ -146,10 +147,10 @@ public class AdminFormController {
 
     public void btnRemoveOnAction(ActionEvent actionEvent) throws SQLException, ClassNotFoundException {
         if (selectedItem!=null){
-            if (item.deleteItem(selectedItem.getItemCode())){
+            if (itemBO.deleteItem(selectedItem.getItemCode())){
                 new Alert(Alert.AlertType.CONFIRMATION, "Deleted").show();
 
-                setItemToTable(item.getAllItem());
+                setItemToTable(itemBO.getAllItem());
 
                 txtItemCode.clear();
                 txtDescription.clear();
@@ -169,7 +170,7 @@ public class AdminFormController {
     public void btnSearchOnAction(ActionEvent actionEvent) throws SQLException, ClassNotFoundException {
         String itemCode = txtItemCode.getText();
 
-        ItemDTO i1 = item.searchItem(itemCode);
+        ItemDTO i1 = itemBO.searchItem(itemCode);
         if (i1==null){
             new Alert(Alert.AlertType.WARNING, "Empty Result Set").show();
         }else {

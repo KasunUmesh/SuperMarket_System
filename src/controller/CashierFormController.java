@@ -303,7 +303,7 @@ public class CashierFormController {
             txtcID.requestFocus();
 
             setCustomerToTable(customerBO.getAllCustomer());
-           
+
         } catch (SQLException e) {
             new Alert(Alert.AlertType.ERROR, "Failed to Save the Customer" + e.getMessage()).show();
             txtcID.clear();
