@@ -1,6 +1,6 @@
 package bo.custom;
 
-import dto.Item;
+import dto.ItemDTO;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -8,15 +8,15 @@ import java.util.List;
 
 public interface ItemBO {
     
-    Item searchItem(String itemId) throws SQLException, ClassNotFoundException;
+    ItemDTO searchItem(String itemId) throws SQLException, ClassNotFoundException;
 
     List<String> getAllItemCodes() throws SQLException, ClassNotFoundException;
 
-    ArrayList<Item> getAllItem() throws SQLException, ClassNotFoundException;
+    ArrayList<ItemDTO> getAllItem() throws SQLException, ClassNotFoundException;
 
-    boolean addItem(Item i1) throws SQLException, ClassNotFoundException;
+    boolean addItem(ItemDTO i1) throws SQLException, ClassNotFoundException;
 
-    boolean updateItem(Item i1) throws SQLException, ClassNotFoundException;
+    boolean updateItem(ItemDTO i1) throws SQLException, ClassNotFoundException;
 
     boolean deleteItem(String itemCode) throws SQLException, ClassNotFoundException;
 }

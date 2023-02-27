@@ -1,9 +1,10 @@
 package bo.custom.impl;
 
 import bo.custom.CustomerBO;
+import dao.DAOFactory;
 import dao.custom.CustomerDAO;
-import dao.custom.impl.CustomerDAOImpl;
-import dto.Customer;
+import dto.CustomerDTO;
+import entity.Customer;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -11,35 +12,41 @@ import java.util.List;
 
 public class CustomerBOImpl implements CustomerBO {
 
-    private CustomerDAO customer = new CustomerDAOImpl();
+
+    private final CustomerDAO customerDAO = (CustomerDAO) DAOFactory.getDaoFactory().getDAO(DAOFactory.DAOTypes.CUSTOMER);
 
     @Override
     public Customer searchCustomer(String customerId) throws SQLException, ClassNotFoundException {
-        return customer.search(customerId);
+        return customerDAO.search(customerId);
     }
 
     @Override
     public List<String> getCustomerIds() throws SQLException, ClassNotFoundException {
-        return customer.getCustomerIds();
+        return customerDAO.getCustomerIds();
     }
 
     @Override
-    public ArrayList<Customer> getAllCustomer() throws SQLException, ClassNotFoundException {
-        return customer.getAll();
+    public ArrayList<CustomerDTO> getAllCustomer() throws SQLException, ClassNotFoundException {
+        ArrayList<CustomerDTO> allCustomers = new ArrayList<>();
+        ArrayList<Customer> all = customerDAO.getAll();
+        for (Customer customer : all) {
+            allCustomers.add(new CustomerDTO(customer.getId(), customer.getTitle(), customer.getName(), customer.getAddress(), customer.getCity(), customer.getProvince(), customer.getPostalCode()));
+        }
+        return allCustomers;
     }
 
     @Override
-    public boolean updateCustomer(Customer c1) throws SQLException, ClassNotFoundException {
-        return customer.update(c1);
+    public boolean updateCustomer(CustomerDTO c1) throws SQLException, ClassNotFoundException {
+        return customerDAO.update(new Customer(c1.getId(), c1.getTitle(), c1.getName(), c1.getAddress(), c1.getCity(), c1.getProvince(), c1.getPostalCode()));
     }
 
     @Override
     public boolean deleteCustomer(String id) throws SQLException, ClassNotFoundException {
-        return customer.delete(id);
+        return customerDAO.delete(id);
     }
 
     @Override
-    public boolean addCustomer(Customer c1) throws SQLException, ClassNotFoundException {
-        return customer.add(c1);
+    public boolean addCustomer(CustomerDTO c1) throws SQLException, ClassNotFoundException {
+        return customerDAO.add(new Customer(c1.getId(), c1.getTitle(), c1.getName(), c1.getAddress(), c1.getCity(), c1.getProvince(), c1.getPostalCode()));
     }
 }

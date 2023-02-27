@@ -11,7 +11,7 @@ public class CrudUtil {
 
     private static PreparedStatement getPreparedStatement(String sql, Object... args) throws SQLException, ClassNotFoundException {
 
-        Connection connection = DBConnection.getInstance().getConnection();
+        Connection connection = DBConnection.getDbConnection().getConnection();
         PreparedStatement pstm = connection.prepareStatement(sql);
 
         for (int i = 0; i < args.length; i++) {

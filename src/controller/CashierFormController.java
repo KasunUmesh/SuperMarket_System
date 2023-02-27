@@ -1,5 +1,6 @@
 package controller;
 
+import bo.BoFactory;
 import bo.custom.CustomerBO;
 import bo.custom.impl.CustomerBOImpl;
 import bo.custom.ItemBO;
@@ -21,10 +22,10 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import javafx.util.Duration;
-import dto.Customer;
-import dto.Item;
-import dto.ItemDetails;
-import dto.Order;
+import dto.CustomerDTO;
+import dto.ItemDTO;
+import dto.OrderDetailsDTO;
+import dto.OrderDTO;
 import views.tm.CartTm;
 import views.tm.CustomerTM;
 import views.tm.OrderDetailTM;
@@ -101,7 +102,7 @@ public class CashierFormController {
 
     private OrderDAO order = new OrderDAOImpl();
 
-    private CustomerBO customer = new CustomerBOImpl();
+    private CustomerBO customerBO =
     private ItemBO item = new ItemBOImpl();
 
 
@@ -214,7 +215,7 @@ public class CashierFormController {
 
     private void setItemData(String itemId) throws SQLException, ClassNotFoundException {
 
-        Item i1 = item.searchItem(itemId);
+        ItemDTO i1 = item.searchItem(itemId);
         if (i1 == null) {
 
             new Alert(Alert.AlertType.WARNING, "Empty Result Set");
@@ -229,7 +230,7 @@ public class CashierFormController {
     }
 
     private void setCustomerData(String customerId) throws SQLException, ClassNotFoundException {
-        Customer c1 = customer.searchCustomer(customerId);
+        CustomerDTO c1 = customer.searchCustomer(customerId);
         if (c1 == null) {
 
             new Alert(Alert.AlertType.WARNING, "Empty Result Set");
@@ -256,7 +257,7 @@ public class CashierFormController {
 
     }
 
-    private void setCustomerToTable(ArrayList<Customer> customers){
+    private void setCustomerToTable(ArrayList<CustomerDTO> customers){
         ObservableList<CustomerTM> obList = FXCollections.observableArrayList();
         customers.forEach(e->{
             obList.add(new CustomerTM(e.getId(),e.getTitle(),e.getName(),e.getAddress(),e.getCity(),e.getProvince(),e.getPostalCode()));
@@ -277,7 +278,7 @@ public class CashierFormController {
     }
 
     public void btnAddCustomerOnAction(ActionEvent actionEvent) throws SQLException, ClassNotFoundException {
-        Customer c1 = new Customer(
+        CustomerDTO c1 = new CustomerDTO(
                 txtcID.getText(),
                 txtcTitle.getText(),
                 txtcName.getText(),
@@ -336,7 +337,7 @@ public class CashierFormController {
 
         String customerId = txtcID.getText();
 
-        Customer c1 = customer.searchCustomer(customerId);
+        CustomerDTO c1 = customer.searchCustomer(customerId);
         if (c1==null){
             new Alert(Alert.AlertType.WARNING, "Empty Result Set").show();
         }else {
@@ -347,7 +348,7 @@ public class CashierFormController {
 
 
     public void btnUpdateOnAction(ActionEvent actionEvent) throws SQLException, ClassNotFoundException {
-        Customer c1 = new Customer(
+        CustomerDTO c1 = new CustomerDTO(
                 txtcID.getText(),
                 txtcTitle.getText(),
                 txtcName.getText(),
@@ -398,7 +399,7 @@ public class CashierFormController {
         }
     }
 
-    void setData(Customer c){
+    void setData(CustomerDTO c){
         txtcID.setText(c.getId());
         txtcTitle.setText(c.getTitle());
         txtcName.setText(c.getName());
@@ -493,12 +494,12 @@ public class CashierFormController {
     }
 
     public void btnConfirmOrder(ActionEvent actionEvent) throws SQLException, ClassNotFoundException {
-        ArrayList<ItemDetails> item = new ArrayList<>();
+        ArrayList<OrderDetailsDTO> item = new ArrayList<>();
         double total = 0;
         for (CartTm tempTm : obList
              ) {
             total+=tempTm.getTotal();
-            item.add(new ItemDetails(
+            item.add(new OrderDetailsDTO(
                     "",
                     tempTm.getItemCode(),
                     tempTm.getQty(),
@@ -507,7 +508,7 @@ public class CashierFormController {
 
         }
 
-        Order order = new Order(
+        OrderDTO orderDTO = new OrderDTO(
                 lblOrderId.getText(),
                 lblDate.getText(),
                 cmbCustomerID.getValue(),
@@ -515,7 +516,7 @@ public class CashierFormController {
                 item
         );
 
-        if (new OrderDAOImpl().placeOrder(order)){
+        if (new OrderDAOImpl().placeOrder(orderDTO)){
 
             new Alert(Alert.AlertType.CONFIRMATION, "Success").show();
             setOrderId();

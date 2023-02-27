@@ -1,16 +1,16 @@
-package dto;
+package entity;
 
-public class ItemDetails {
+public class OrderDetails {
     private String orderId;
     private String itemCode;
     private int orderQty;
     private double dprice;
 
-    public ItemDetails() {
+    public OrderDetails() {
 
     }
 
-    public ItemDetails(String orderId, String itemCode, int orderQty, double dprice) {
+    public OrderDetails(String orderId, String itemCode, int orderQty, double dprice) {
         this.orderId = orderId;
         this.itemCode = itemCode;
         this.orderQty = orderQty;

@@ -16,7 +16,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
-import dto.Item;
+import dto.ItemDTO;
 import views.tm.ItemTM;
 
 import java.io.IOException;
@@ -66,9 +66,9 @@ public class AdminFormController {
         }
     }
 
-    private void setItemToTable(ArrayList<Item> items){
+    private void setItemToTable(ArrayList<ItemDTO> itemDTOS){
         ObservableList<ItemTM> obList = FXCollections.observableArrayList();
-        items.forEach(e->{
+        itemDTOS.forEach(e->{
             obList.add(
                     new ItemTM(e.getItemCode(),e.getDescription(),e.getPackSize(),e.getUnitPrice(),e.getQtyOnHand()));
         });
@@ -86,7 +86,7 @@ public class AdminFormController {
     }
 
     public void btnAddOnAction(ActionEvent actionEvent) throws SQLException, ClassNotFoundException {
-        Item i1 = new Item(
+        ItemDTO i1 = new ItemDTO(
                 txtItemCode.getText(),
                 txtDescription.getText(),
                 txtPackSize.getText(),
@@ -119,7 +119,7 @@ public class AdminFormController {
     }
 
     public void btnUpdateOnAction(ActionEvent actionEvent) throws SQLException, ClassNotFoundException {
-        Item i1 = new Item(
+        ItemDTO i1 = new ItemDTO(
                 txtItemCode.getText(),
                 txtDescription.getText(),
                 txtPackSize.getText(),
@@ -169,7 +169,7 @@ public class AdminFormController {
     public void btnSearchOnAction(ActionEvent actionEvent) throws SQLException, ClassNotFoundException {
         String itemCode = txtItemCode.getText();
 
-        Item i1 = item.searchItem(itemCode);
+        ItemDTO i1 = item.searchItem(itemCode);
         if (i1==null){
             new Alert(Alert.AlertType.WARNING, "Empty Result Set").show();
         }else {
@@ -177,7 +177,7 @@ public class AdminFormController {
         }
 
     }
-    void setItem(Item i){
+    void setItem(ItemDTO i){
         txtItemCode.setText(i.getItemCode());
         txtDescription.setText(i.getDescription());
         txtPackSize.setText(i.getPackSize());

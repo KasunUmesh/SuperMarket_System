@@ -1,4 +1,4 @@
-package dto;
+package entity;
 
 import java.util.ArrayList;
 
@@ -7,13 +7,13 @@ public class Order {
     private String orderDate;
     private String custId;
     private double cost;
-    private ArrayList<ItemDetails> items;
+    private ArrayList<OrderDetails> items;
 
     public Order() {
 
     }
 
-    public Order(String orderId, String orderDate, String custId, double cost, ArrayList<ItemDetails> items) {
+    public Order(String orderId, String orderDate, String custId, double cost, ArrayList<OrderDetails> items) {
         this.orderId = orderId;
         this.orderDate = orderDate;
         this.custId = custId;
@@ -53,11 +53,11 @@ public class Order {
         this.cost = cost;
     }
 
-    public ArrayList<ItemDetails> getItems() {
+    public ArrayList<OrderDetails> getItems() {
         return items;
     }
 
-    public void setItems(ArrayList<ItemDetails> items) {
+    public void setItems(ArrayList<OrderDetails> items) {
         this.items = items;
     }
 

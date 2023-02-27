@@ -4,8 +4,8 @@ import dao.CrudUtil;
 import dao.custom.OrderDAO;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import dto.ItemDetails;
-import dto.Order;
+import dto.OrderDetailsDTO;
+import dto.OrderDTO;
 import views.tm.OrderDetailTM;
 import views.tm.OrderTM;
 
@@ -39,21 +39,21 @@ public class OrderDAOImpl implements OrderDAO {
     }
 
     @Override
-    public boolean placeOrder(Order order){
+    public boolean placeOrder(OrderDTO orderDTO){
         try {
 
             boolean addOrder = CrudUtil.executeUpdate("INSERT INTO `Order` VALUE (?,?,?,?)",
 
-                    order.getOrderId(),
-                    order.getOrderDate(),
-                    order.getCustId(),
-                    order.getCost()
+                    orderDTO.getOrderId(),
+                    orderDTO.getOrderDate(),
+                    orderDTO.getCustId(),
+                    orderDTO.getCost()
 
             );
 
             if (addOrder){
 
-                return saveOrderDetail(order.getOrderId(), order.getItems());
+                return saveOrderDetail(orderDTO.getOrderId(), orderDTO.getItems());
 
             }else {
                 return false;
@@ -69,8 +69,8 @@ public class OrderDAOImpl implements OrderDAO {
 
 
     @Override
-    public boolean saveOrderDetail(String orderId, ArrayList<ItemDetails> items) throws SQLException, ClassNotFoundException {
-        for (ItemDetails temp: items
+    public boolean saveOrderDetail(String orderId, ArrayList<OrderDetailsDTO> items) throws SQLException, ClassNotFoundException {
+        for (OrderDetailsDTO temp: items
              ) {
 
             boolean orderDetail = CrudUtil.executeUpdate("INSERT INTO `Order Detail` VALUES(?,?,?,?)",

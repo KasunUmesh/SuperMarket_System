@@ -2,7 +2,8 @@ package dao.custom.impl;
 
 import dao.CrudUtil;
 import dao.custom.ItemDAO;
-import dto.Item;
+import dto.ItemDTO;
+import entity.Item;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -69,12 +70,12 @@ public class ItemDAOImpl implements ItemDAO {
     @Override
     public ArrayList<Item> getAll() throws SQLException, ClassNotFoundException {
 
-        ArrayList<Item> items = new ArrayList<>();
+        ArrayList<Item> itemDTOS = new ArrayList<>();
 
         ResultSet rst = CrudUtil.executeQuery("SELECT * FROM Item");
 
         while (rst.next()){
-            items.add(new Item(
+            itemDTOS.add(new Item(
                     rst.getString(1),
                     rst.getString(2),
                     rst.getString(3),
@@ -82,7 +83,7 @@ public class ItemDAOImpl implements ItemDAO {
                     Integer.parseInt(rst.getString(5))
             ));
         }
-        return items;
+        return itemDTOS;
     }
 
     @Override
@@ -95,6 +96,11 @@ public class ItemDAOImpl implements ItemDAO {
             ids.add(rst.getString(1));
         }
         return ids;
+    }
+
+    @Override
+    public String generateNewID() {
+        return null;
     }
 
 }

@@ -2,7 +2,8 @@ package dao.custom.impl;
 
 import dao.CrudUtil;
 import dao.custom.CustomerDAO;
-import dto.Customer;
+import dto.CustomerDTO;
+import entity.Customer;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -103,6 +104,11 @@ public class CustomerDAOImpl implements CustomerDAO {
             ids.add(rst.getString(1));
         }
         return ids;
+    }
+
+    @Override
+    public String generateNewID() {
+        return null;
     }
 
 }
